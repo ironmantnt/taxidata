@@ -1,0 +1,32 @@
+import sys
+from math import ceil
+from util.time import time_transfer
+
+base = (121.31, 31.08)
+
+# lon 96000
+# lat 111000
+
+size = int(sys.argv[2]) 
+
+def grid_index(base, lon, lat, size):
+	x, y = lon - base[0], lat - base[1]
+	x *= 96000
+	y *= 111000
+	return (ceil(x / size), ceil(y / size))
+
+def data_format(fname):
+	fr = open(fname, 'r')
+	fw = open('input/' + repr(size) + '.txt', 'w')
+	for line in fr:
+		# string
+		s_lon,s_lat,s_time,e_lon,e_lat,e_time = line.split(',')[1:]
+		s_x, s_y = grid_index(base, float(s_lon), float(s_lat), size)
+		e_x, e_y = grid_index(base, float(e_lon), float(e_lat), size)
+		s_t, e_t = time_transfer(s_time), time_transfer(e_time)
+		tmp = ','.join([repr(s_x), repr(s_y), repr(s_t), repr(e_x), repr(e_y), repr(e_t)])
+		fw.write(tmp + '\n')
+
+if __name__ == '__main__':
+	fname = sys.argv[1]
+	data_format(fname)

@@ -1,7 +1,7 @@
 '''
 Transfer time stamp to neural network input
 	@bolan on 13rd, June
-	'''
+'''
 
 def time_transfer(time):
 	hour, minute = time[:2], time[2:4]
