@@ -1,6 +1,7 @@
 import sys
 from math import ceil
 from util.time import time_transfer
+from util.direction import direction_index
 
 base = (121.31, 31.08)
 
@@ -15,16 +16,19 @@ def grid_index(base, lon, lat, size):
 	y *= 111000
 	return (ceil(x / size), ceil(y / size))
 
+
 def data_format(fname):
 	fr = open(fname, 'r')
-	fw = open('input/' + repr(size) + '.txt', 'w')
+	fw = open('input/' + repr(size) + '.txt', 'a')
 	for line in fr:
 		# string
-		s_lon,s_lat,s_time,e_lon,e_lat,e_time = line.split(',')[1:]
+		tid,s_lon,s_lat,s_time,e_lon,e_lat,e_time = line.split(',')
 		s_x, s_y = grid_index(base, float(s_lon), float(s_lat), size)
 		e_x, e_y = grid_index(base, float(e_lon), float(e_lat), size)
+		angle = direction_index(s_x, s_y, e_x, e_y)
 		s_t, e_t = time_transfer(s_time), time_transfer(e_time)
-		tmp = ','.join([repr(s_x), repr(s_y), repr(s_t), repr(e_x), repr(e_y), repr(e_t)])
+		#tmp = ','.join([repr(s_x), repr(s_y), repr(s_t), repr(e_x), repr(e_y), repr(e_t)])
+		tmp = ','.join([tid, repr(s_x)+'-'+repr(s_y), repr(angle), repr(s_t), repr(e_x)+'-'+repr(e_y)])
 		fw.write(tmp + '\n')
 
 if __name__ == '__main__':
